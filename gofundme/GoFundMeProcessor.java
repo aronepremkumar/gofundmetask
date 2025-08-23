@@ -11,11 +11,11 @@ public class GoFundMeProcessor {
     //Donors and their campaign amounts donated
     private static Map<String, List<DonorCampaign>> donorCampaignMap = new HashMap<String, List<DonorCampaign>>();
     //Maps to store original names with cases
-    private static Map<String,String> donorNameMap = new HashMap<String,String>();
+    private static Map<String, String> donorNameMap = new HashMap<String, String>();
     //Maps to store original campaign names with cases
-    private static Map<String,String> campaignNameMap = new HashMap<String,String>();
-
-
+    private static Map<String, String> campaignNameMap = new HashMap<String, String>();
+    // Utility class instance
+    private static Utility utility = new Utility();
 
 
     public static double computeAverage(String donorName) {
@@ -23,11 +23,11 @@ public class GoFundMeProcessor {
         List<DonorCampaign> donorCampaigns = donorCampaignMap.get(donorName.toLowerCase());
         int size = donorCampaigns.size();
         Iterator<DonorCampaign> iterator = donorCampaigns.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             DonorCampaign donorCampaign = iterator.next();
             average += donorCampaign.getCampaignAmount();
         }
-        return average/size;
+        return average / size;
     }
 
     public static void printSummary() {
@@ -38,7 +38,7 @@ public class GoFundMeProcessor {
         //compute total and average donation per donor
         TreeSet<String> donorSet = new TreeSet<String>(donorLimit.keySet());
         for (String donor : donorSet) {
-            System.out.println(donorNameMap.get(donor.toLowerCase()) + ": Total: $" + donorLimit.get(donor) + " Average: "+computeAverage(donor));
+            System.out.println(donorNameMap.get(donor.toLowerCase()) + ": Total: $" + donorLimit.get(donor) + " Average: " + computeAverage(donor));
         }
         System.out.println(" ");
         // Print campaign names and their total balances
@@ -49,25 +49,6 @@ public class GoFundMeProcessor {
             System.out.println(campaignNameMap.get(campaign.toLowerCase()) + ": Total: $" + campaignBalanceMap.get(campaign));
         }
         System.out.println("Response code: 200");
-    }
-
-    public static boolean isValidString(String name) {
-        //validate donor name
-        boolean isValid = true;
-        isValid = (name == null || name.isEmpty()) ? false : true;
-        //System.out.println("Name " + name + " is valid: " + isValid);
-        return isValid;
-    }
-
-    public static boolean isStringNumber(String str) {
-        try {
-            Double.parseDouble(str);
-            //System.out.println("String " + str + " is a valid number.");
-            return true;
-        } catch (NumberFormatException e) {
-            //System.out.println("String " + str + " is not a valid number.");
-            return false;
-        }
     }
 
 
@@ -87,14 +68,14 @@ public class GoFundMeProcessor {
                 //if not empty string remove the dollar sign in the front
                 if (!(balanceStr == null || balanceStr.isEmpty()) && balanceStr.startsWith("$"))
                     balanceStr = balanceStr.substring(1);
-                double balance = isStringNumber(balanceStr) ? Double.parseDouble(balanceStr) : 0;
-                if (isValidString(donorName) && balance > 0) {
+                double balance = utility.isStringNumber(balanceStr) ? Double.parseDouble(balanceStr) : 0;
+                if (utility.isValidString(donorName) && balance > 0) {
                     System.out.println("Adding donor: " + donorName + " with balance: " + balance);
                     //add to donor balance map
-                    if(donorLimit.containsKey(donorName.toLowerCase())){
+                    if (donorLimit.containsKey(donorName.toLowerCase())) {
                         double existingBalance = donorLimit.get(donorName.toLowerCase());
                         balance = existingBalance + balance;
-                    }else{
+                    } else {
                         donorNameMap.put(donorName.toLowerCase(), donorName);
                     }
                     donorLimit.put(donorName.toLowerCase(), balance);
@@ -109,10 +90,10 @@ public class GoFundMeProcessor {
             //Add campaign case
             if (length == 3) {
                 String campaignName = parts[2];
-                if (isValidString(campaignName)) {
+                if (utility.isValidString(campaignName)) {
                     System.out.println("Adding campaign: " + campaignName);
                     //add to campaign balance map
-                    if(!campaignBalanceMap.containsKey(campaignName.toLowerCase())){
+                    if (!campaignBalanceMap.containsKey(campaignName.toLowerCase())) {
                         campaignBalanceMap.put(campaignName.toLowerCase(), 0.0);
                         campaignNameMap.put(campaignName.toLowerCase(), campaignName);
                     }
@@ -123,27 +104,26 @@ public class GoFundMeProcessor {
             } else {
                 System.out.println("Invalid add campaign format.");
             }
-        }
-        else if (command.equalsIgnoreCase("donate") && length == 4){
+        } else if (command.equalsIgnoreCase("donate") && length == 4) {
             String donorName = parts[1];
             String campaignName = parts[2];
             String amountStr = parts[3];
-            if(!(amountStr == null || amountStr.isEmpty()) && amountStr.startsWith("$"))
+            if (!(amountStr == null || amountStr.isEmpty()) && amountStr.startsWith("$"))
                 amountStr = amountStr.substring(1);
-            double amount = isStringNumber(amountStr) ? Double.parseDouble(amountStr) :0;
+            double amount = utility.isStringNumber(amountStr) ? Double.parseDouble(amountStr) : 0;
 
             //check if donor and campaign exist
             boolean isValidDonor = (!donorLimit.containsKey(donorName.toLowerCase())) ? false : true;
             boolean isValidCampaign = (!campaignBalanceMap.containsKey(campaignName.toLowerCase())) ? false : true;
             boolean insufficientBalance = false;
             //check if donor has enough balance
-            if(isValidDonor){
+            if (isValidDonor) {
                 double existingBalance = donorLimit.get(donorName.toLowerCase());
                 insufficientBalance = (existingBalance < amount) ? true : false;
 
             }
 
-            if(isValidDonor && isValidCampaign && !insufficientBalance && amount>0) {
+            if (isValidDonor && isValidCampaign && !insufficientBalance && amount > 0) {
                 System.out.println("Processing donation of $" + amount + " from donor " + donorName + " to campaign " + campaignName);
                 //deduct balance from donor
                 double existingBalance = donorLimit.get(donorName.toLowerCase());
@@ -159,26 +139,22 @@ public class GoFundMeProcessor {
                 donorCampaign.setDonorName(donorName.toLowerCase());
                 donorCampaign.setCampaignName(campaignName.toLowerCase());
                 donorCampaign.setCampaignAmount(amount);
-                if(donorCampaignMap.containsKey(donorName.toLowerCase())){
+                if (donorCampaignMap.containsKey(donorName.toLowerCase())) {
                     List<DonorCampaign> existingList = donorCampaignMap.get(donorName.toLowerCase());
                     existingList.add(donorCampaign);
                     donorCampaignMap.put(donorName.toLowerCase(), existingList);
-                }else{
+                } else {
                     List<DonorCampaign> newList = new ArrayList<DonorCampaign>();
                     newList.add(donorCampaign);
                     donorCampaignMap.put(donorName.toLowerCase(), newList);
                 }
 
-            }else {
+            } else {
                 System.out.println("Invalid donor or campaign or insufficient balance.");
             }
-        }else{
+        } else {
             System.out.println("Invalid command or format.");
         }
-
-        //System.out.println("Donor Balances: " + donorBalanceMap);
-        //System.out.println("Campaign Balances: " + campaignBalanceMap);
-
     }
 
     public static void main(String[] args) {
@@ -208,12 +184,12 @@ public class GoFundMeProcessor {
                     if (line.equalsIgnoreCase("END")) break;
                     processEachLine(line);
                 } catch (Exception e) {
-                    System.out.println("Error processing line: " + line);
+                    System.err.println("Error processing line: " + line);
                 }
             }
             printSummary();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

@@ -1,0 +1,23 @@
+package gofundme;
+
+public class Utility {
+
+    public boolean isValidString(String name) {
+        //validate donor name
+        boolean isValid = true;
+        isValid = (name == null || name.isEmpty()) ? false : true;
+        //System.out.println("Name " + name + " is valid: " + isValid);
+        return isValid;
+    }
+
+    public boolean isStringNumber(String str) {
+        try {
+            Double.parseDouble(str);
+            //System.out.println("String " + str + " is a valid number.");
+            return true;
+        } catch (NumberFormatException e) {
+            //System.out.println("String " + str + " is not a valid number.");
+            return false;
+        }
+    }
+}
