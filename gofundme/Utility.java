@@ -2,6 +2,11 @@ package gofundme;
 
 public class Utility {
 
+    /**
+     * Validate if the string is null or empty
+     * @param name
+     * @return
+     */
     public boolean isValidString(String name) {
         //validate donor name
         boolean isValid = true;
@@ -10,6 +15,11 @@ public class Utility {
         return isValid;
     }
 
+    /**
+     * Validate if the string is a number
+     * @param str
+     * @return
+     */
     public boolean isStringNumber(String str) {
         try {
             Double.parseDouble(str);
