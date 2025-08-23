@@ -1,3 +1,5 @@
+package gofundme;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,65 +15,8 @@ public class GoFundMeProcessor {
     //Maps to store original campaign names with cases
     private static Map<String,String> campaignNameMap = new HashMap<String,String>();
 
-    public static class DonorCampaign {
-        String donorName;
-        String campaignName;
-        double CampaignAmount;
 
-        public String getDonorName() {
-            return donorName;
-        }
 
-        public void setDonorName(String donorName) {
-            this.donorName = donorName;
-        }
-
-        public double getCampaignAmount() {
-            return CampaignAmount;
-        }
-
-        public void setCampaignAmount(double campaignAmount) {
-            CampaignAmount = campaignAmount;
-        }
-
-        public String getCampaignName() {
-            return campaignName;
-        }
-
-        public void setCampaignName(String campaignName) {
-            this.campaignName = campaignName;
-        }
-    }
-
-    public static class CampaignDonor {
-        String campaignName;
-        String donorName;
-        double donorAmount;
-
-        public String getCampaignName() {
-            return campaignName;
-        }
-
-        public void setCampaignName(String campaignName) {
-            this.campaignName = campaignName;
-        }
-
-        public String getDonorName() {
-            return donorName;
-        }
-
-        public void setDonorName(String donorName) {
-            this.donorName = donorName;
-        }
-
-        public double getDonorAmount() {
-            return donorAmount;
-        }
-
-        public void setDonorAmount(double donorAmount) {
-            this.donorAmount = donorAmount;
-        }
-    }
 
     public static double computeAverage(String donorName) {
         double average = 0.0;
