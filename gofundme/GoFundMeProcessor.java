@@ -47,16 +47,23 @@ public class GoFundMeProcessor {
         double total = 0.0;
         double average = 0.0;
         List<DonorCampaign> donorCampaigns = donorCampaignMap.get(donorName.toLowerCase());
-        int size = donorCampaigns.size();
-        Iterator<DonorCampaign> iterator = donorCampaigns.iterator();
-        while (iterator.hasNext()) {
-            DonorCampaign donorCampaign = iterator.next();
-            average += donorCampaign.getCampaignAmount();
+        try{
+            if(donorCampaigns!=null){
+                int size = (donorCampaigns!=null) ? donorCampaigns.size(): 0;
+                Iterator<DonorCampaign> iterator = donorCampaigns.iterator();
+                while (iterator.hasNext()) {
+                    DonorCampaign donorCampaign = iterator.next();
+                    average += donorCampaign.getCampaignAmount();
+                }
+                total = average;
+                average = (size > 0) ? average / size : 0.0;
+            }
+            result.put("total", total);
+            result.put("average", average);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        total = average;
-        average = (size > 0) ? average / size : 0.0;
-        result.put("total", total);
-        result.put("average", average);
+
         return result;
     }
 
@@ -82,7 +89,9 @@ public class GoFundMeProcessor {
         for (String campaign : campaignSet) {
             System.out.println(campaignNameMap.get(campaign.toLowerCase()) + ": Total: $" + campaignBalanceMap.get(campaign));
         }
-        System.out.println("Response code: 200");
+        System.out.println(" ");
+        System.out.println("Response code: 200 OK");
+        System.out.println("=================================");
     }
 
 
