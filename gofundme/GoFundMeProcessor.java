@@ -18,6 +18,22 @@ public class GoFundMeProcessor {
     private static Utility utility = new Utility();
 
     /**
+     * Get all donor names
+     * @return
+     */
+    public Set<String> getDonorNames() {
+        return donorLimit.keySet();
+    }
+
+    /*
+    * Get all campaign names
+    * @return
+     */
+    public Set<String> getCampaignNames() {
+        return campaignBalanceMap.keySet();
+    }
+
+    /**
      * Compute average donation amount per donor
      * @param donorName
      * @return
