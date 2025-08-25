@@ -43,7 +43,7 @@ public class GoFundMeProcessor {
      * @return
      */
     public static Map<String, Double> computeTotalAndAverage(String donorName) {
-        Map result = new HashMap<String, Double>();
+        Map<String,Double> result = new HashMap<String, Double>();
         double total = 0.0;
         double average = 0.0;
         List<DonorCampaign> donorCampaigns = donorCampaignMap.get(donorName.toLowerCase());
