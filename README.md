@@ -4,7 +4,7 @@
 This project takes input and processes GoFundMe recurring campaigns.
 
 ## Repository
-The source code is available at: [https://github.com/your-username/gfm-recurring](https://github.com/your-username/gfm-recurring)
+The source code is available at: [https://github.com/aronepremkumar/gofundmetask](https://github.com/aronepremkumar/gofundmetask)
 
 ## Installation
 To set up the project, you'll need to install GraalVM, create a JAR file, and generate an executable. For detailed instructions, see [INSTALL.md](INSTALL.md).
